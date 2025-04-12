@@ -6,7 +6,7 @@ const EstimationHistory = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/history');
+        const res = await fetch('https://construction-cost-estimator-production.up.railway.app/api/history');
         const data = await res.json();
         setHistory(data);
         console.log(data);

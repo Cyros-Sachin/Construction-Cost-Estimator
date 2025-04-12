@@ -21,7 +21,7 @@ const EstimatorForm = () => {
   };
 
   const handleEstimate = async () => {
-    const response = await fetch('http://localhost:5000/api/estimate', {
+    const response = await fetch('https://construction-cost-estimator-production.up.railway.app/estimate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ materials, laborHours, laborRate }),
@@ -31,7 +31,7 @@ const EstimatorForm = () => {
   };
 
   const handleOptimize = async () => {
-    const response = await fetch('http://localhost:5000/api/optimize', {
+    const response = await fetch('https://construction-cost-estimator-production.up.railway.app/api/optimize', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ materials, laborHours, laborRate }),
@@ -47,7 +47,7 @@ const EstimatorForm = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/save', {
+      const res = await fetch('https://construction-cost-estimator-production.up.railway.app/api/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
