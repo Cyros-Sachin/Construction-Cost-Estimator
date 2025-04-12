@@ -21,7 +21,7 @@ const EstimatorForm = () => {
   };
 
   const handleEstimate = async () => {
-    const response = await fetch('https://construction-cost-estimator-production.up.railway.app/estimate', {
+    const response = await fetch('https://construction-cost-estimator-production.up.railway.app/api/estimate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ materials, laborHours, laborRate }),
