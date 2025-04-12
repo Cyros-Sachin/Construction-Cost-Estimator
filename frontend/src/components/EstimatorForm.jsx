@@ -72,6 +72,11 @@ const EstimatorForm = () => {
   const generatePDF = () => {
     const input = document.getElementById('pdf-report');
 
+    if (!input) {
+      alert('Please wait for the content to be loaded.');
+      return;
+    }
+
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF();
@@ -81,20 +86,25 @@ const EstimatorForm = () => {
 
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save('cost-estimation-report.pdf');
+    }).catch((error) => {
+      console.error('Error generating PDF:', error);
+      alert('An error occurred while generating the PDF.');
     });
   };
 
   return (
     <div id="pdf-report">
-      <div className="max-w-xl mx-auto p-6 bg-white shadow-xl rounded-2xl space-y-4 mt-10">
-        <h2 className="text-2xl font-bold">Construction Cost Estimator</h2>
+      <div className="max-w-3xl mx-auto p-8 bg-white shadow-2xl rounded-3xl space-y-6 mt-10 border border-gray-200">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          🏗️ Construction Cost Estimator
+        </h2>
 
         {materials.map((mat, idx) => (
           <div key={mat.name} className="flex justify-between items-center">
-            <label className="font-medium">{mat.name} Quantity:</label>
+            <label className="font-medium text-gray-700">{mat.name} Quantity:</label>
             <input
               type="number"
-              className="border p-2 w-32 rounded"
+              className="border border-gray-300 p-3 w-36 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none"
               value={mat.quantity}
               onChange={(e) => handleChange(idx, e.target.value)}
             />
@@ -102,81 +112,82 @@ const EstimatorForm = () => {
         ))}
 
         <div className="flex justify-between items-center">
-          <label className="font-medium">Labor Hours:</label>
+          <label className="font-medium text-gray-700">Labor Hours:</label>
           <input
             type="number"
-            className="border p-2 w-32 rounded"
+            className="border border-gray-300 p-3 w-36 rounded-xl focus:ring-2 focus:ring-green-400 focus:outline-none"
             value={laborHours}
             onChange={(e) => setLaborHours(parseInt(e.target.value) || 0)}
           />
         </div>
 
         <div className="flex justify-between items-center">
-          <label className="font-medium">Labor Rate:</label>
+          <label className="font-medium text-gray-700">Labor Rate:</label>
           <input
             type="number"
-            className="border p-2 w-32 rounded"
+            className="border border-gray-300 p-3 w-36 rounded-xl focus:ring-2 focus:ring-green-400 focus:outline-none"
             value={laborRate}
             onChange={(e) => setLaborRate(parseInt(e.target.value) || 0)}
           />
         </div>
 
-        <div className="space-x-4">
+        <div className="flex flex-wrap justify-center gap-4 pt-2">
           <button
             onClick={handleEstimate}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition"
           >
-            Estimate Cost
+            📐 Estimate Cost
           </button>
           <button
             onClick={handleOptimize}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            className="bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 transition"
           >
-            Optimize Cost
+            🧠 Optimize Cost
           </button>
           <button
             onClick={generatePDF}
-            className="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800"
+            className="bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-800 transition"
           >
-            Download PDF
+            📄 Download PDF
           </button>
           <button
             onClick={handleSaveEstimation}
-            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+            className="bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-700 transition"
           >
-            Save Estimation
+            💾 Save Estimation
           </button>
         </div>
 
         {result && <Dashboard breakdown={result.breakdown} />}
 
-
         {optimizedResult && (
-          <div className="mt-8 border-t pt-6">
-            <h3 className="text-xl font-semibold mb-4">Optimized Estimation</h3>
+          <div className="mt-10 border-t pt-6">
+            <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
+              ✨ Optimized Estimation
+            </h3>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div className="p-4 border rounded-xl bg-gray-50">
-                <h4 className="font-bold mb-2">Original</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-6 border rounded-2xl bg-gray-50 shadow-sm">
+                <h4 className="font-semibold text-gray-700 mb-2">Original</h4>
                 <p><strong>Total:</strong> ₹{result.total}</p>
                 <p><strong>Material:</strong> ₹{result.breakdown.materials}</p>
                 <p><strong>Labor:</strong> ₹{result.breakdown.labor}</p>
               </div>
 
-              <div className="p-4 border rounded-xl bg-green-50">
-                <h4 className="font-bold mb-2">Optimized</h4>
+              <div className="p-6 border rounded-2xl bg-green-50 shadow-sm">
+                <h4 className="font-semibold text-gray-700 mb-2">Optimized</h4>
                 <p><strong>Total:</strong> ₹{optimizedResult.optimizedTotal}</p>
                 <p><strong>Material:</strong> ₹{optimizedResult.breakdown.materials}</p>
                 <p><strong>Labor:</strong> ₹{optimizedResult.breakdown.labor}</p>
-                <p className="mt-2 text-sm text-green-700">
-                  ↓ Saved ₹{result.total - optimizedResult.optimizedTotal}
+                <p className="mt-2 text-green-700 font-medium">
+                  🔻 Saved ₹{result.total - optimizedResult.optimizedTotal}
                 </p>
               </div>
             </div>
 
-            <div className="mt-4">
-              <h4 className="font-semibold">Suggestions:</h4>
-              <ul className="list-disc ml-6">
+            <div className="mt-6">
+              <h4 className="font-semibold text-gray-800 mb-2">💡 Suggestions:</h4>
+              <ul className="list-disc list-inside text-gray-700 space-y-1">
                 {optimizedResult.suggestions.map((sug, i) => (
                   <li key={i}>{sug}</li>
                 ))}
