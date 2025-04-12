@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const app = express();
 const { sequelize } = require('../database/sequelize');
 const MaterialCost = require('../models/MaterialCost');
 
@@ -9,8 +10,6 @@ const historyRoute = require('../routes/history');
 const estimateRoute = require('../routes/estimate');
 const optimizeRoute = require('../routes/optimize');
 
-// Create express app
-const app = express();
 app.use(cors());
 app.use(express.json());
 
@@ -35,10 +34,16 @@ app.use('/api/estimate', estimateRoute);
 app.use('/api/optimize', optimizeRoute);
 app.use('/api/save', saveRoute);
 app.use('/api/history', historyRoute);
+// Add this
+app.get('/', (req, res) => {
+  res.send('🚧 Backend server is running. API available at /api');
+});
 
-// Sequelize sync
-sequelize.sync({ alter: true }).then(() => seedMaterials());
-
-// Export the app as a Vercel handler
-const serverless = require('serverless-http');
-module.exports = serverless(app);
+// Start server
+const PORT = 5000;
+sequelize.sync({ alter: true }).then(() => {
+  seedMaterials();
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+  });
+});
