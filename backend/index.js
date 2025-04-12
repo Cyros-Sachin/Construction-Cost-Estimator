@@ -1,14 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const { sequelize } = require('../database/sequelize');
-const MaterialCost = require('../models/MaterialCost');
+const { sequelize } = require('./database/sequelize');
+const MaterialCost = require('./models/MaterialCost');
 
 // Import routes
-const saveRoute = require('../routes/save');
-const historyRoute = require('../routes/history');
-const estimateRoute = require('../routes/estimate');
-const optimizeRoute = require('../routes/optimize');
+const saveRoute = require('./routes/save');
+const historyRoute = require('./routes/history');
+const estimateRoute = require('./routes/estimate');
+const optimizeRoute = require('./routes/optimize');
 
 app.use(cors());
 app.use(express.json());
