@@ -53,7 +53,7 @@ router.post('/', async (req, res) => {
         const total = totalMaterialCost + totalLaborCost;
 
         // Save to Estimation table
-        const newEstimation = await Estimation.create({
+        const newEstimation = await newEstimation.create({
             materials: optimized,
             laborHours: laborHours,
             laborRate: laborRate,
