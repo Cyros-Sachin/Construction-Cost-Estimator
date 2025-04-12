@@ -34,6 +34,10 @@ app.use('/api/estimate', estimateRoute);
 app.use('/api/optimize', optimizeRoute);
 app.use('/api/save', saveRoute);
 app.use('/api/history', historyRoute);
+// Add this
+app.get('/', (req, res) => {
+  res.send('🚧 Backend server is running. API available at /api');
+});
 
 // Start server
 const PORT = 5000;
